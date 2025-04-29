@@ -42,7 +42,7 @@ async def upload_file(file: UploadFile = File(...)):
         }
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
-    }
+    
 @app.post("/confirm-variables", response_model=ConfirmVariablesResponse)
 async def confirm_variables(filename: str):
     # Descarga temporal desde Firebase
