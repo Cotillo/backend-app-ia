@@ -24,18 +24,27 @@ async def root():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    content = await file.read()
-    filename = file.filename
+    # Crear una ruta temporal
+    temp_path = f"/tmp/{file.filename}"
+
+    # Guardar el archivo temporalmente
+    with open(temp_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
     # Subir archivo a Firebase Storage
     bucket = storage.bucket()
-    blob = bucket.blob(filename)
-    blob.upload_from_string(content, content_type=file.content_type)
+    blob = bucket.blob(file.filename)
+
+    # Subir desde el archivo temporal
+    blob.upload_from_filename(temp_path)
+
+    # Eliminar archivo temporal si querés (opcional)
+    os.remove(temp_path)
 
     url = blob.public_url
 
     return {
-        "message": f"Archivo '{filename}' subido correctamente a Firebase Storage.",
+        "message": f"Archivo '{file.filename}' subido correctamente a Firebase Storage.",
         "firebase_url": url
     }
 @app.post("/confirm-variables", response_model=ConfirmVariablesResponse)
