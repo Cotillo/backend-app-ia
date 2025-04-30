@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, storage
 import os
 
-print("⚡ App iniciando...")
+
 app = FastAPI()
 
 # Inicializar Firebase solo una vez
