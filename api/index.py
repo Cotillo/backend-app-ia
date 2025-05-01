@@ -25,10 +25,13 @@ async def upload_file(file: UploadFile = File(...)):
         bucket = storage.bucket()
         blob = bucket.blob(file.filename)
         blob.upload_from_string(contents, content_type=file.content_type)
+        url = blob.public_url
 
-        return {
-            "message": f"Archivo '{file.filename}' subido correctamente.",
-            "firebase_url": url
+return {
+    "message": f"Archivo '{file.filename}' subido correctamente.",
+    "firebase_url": url
+}
+
         }
 
     except Exception as e:
