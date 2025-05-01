@@ -21,14 +21,10 @@ async def root():
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
+        contents = await file.read()
         bucket = storage.bucket()
         blob = bucket.blob(file.filename)
-
-        contents = await file.read()
-
         blob.upload_from_string(contents, content_type=file.content_type)
-
-        url = blob.public_url
 
         return {
             "message": f"Archivo '{file.filename}' subido correctamente.",
