@@ -1,8 +1,12 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 import firebase_admin
-from firebase_admin import credentials, storage
+from firebase_admin import credentials, storage, firestore
 import os
+import pandas as pd
+import tempfile
+import json
+from .dashboard_generator import generar_dash_por_variables
 
 app = FastAPI()
 
